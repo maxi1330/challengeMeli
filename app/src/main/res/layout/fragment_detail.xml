@@ -18,7 +18,14 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways">
 
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -26,19 +33,19 @@
         android:id="@+id/condition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="11sp"
+        android:layout_marginTop="5dp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/appBar"
-        tools:text="Nuevo" />
+        android:text="Nuevo" />
 
     <TextView
         android:id="@+id/separator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_marginStart="10dp"
         android:text="@string/separatorDetail"
-        android:textSize="11sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/condition"
         app:layout_constraintTop_toTopOf="@+id/condition" />
 
@@ -46,20 +53,20 @@
         android:id="@+id/sold_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="11sp"
+        android:layout_marginStart="10dp"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/separator"
         app:layout_constraintTop_toTopOf="@+id/separator"
-        tools:text="500 vendidos" />
+        android:text="500 vendidos" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintHorizontal_bias="0"
-        tools:text="Batidora De Mano Con Bowl Mondial B05np 350wf"
-        android:textSize="15sp"
+        android:text="Batidora De Mano Con Bowl Mondial B05np 350wf"
+        android:textSize="19sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/condition" />
@@ -68,7 +75,7 @@
         android:id="@+id/linearLayoutCompat"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:src="@drawable/batidora"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -78,11 +85,11 @@
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:padding="10dp"
-        tools:text="$ 8026"
+        android:layout_marginTop="5dp"
+        android:layout_margin="10dp"
+        android:text="$ 8.026"
         android:textStyle="bold"
-        android:textSize="24sp"
+        android:textSize="32sp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
 
@@ -90,7 +97,6 @@
         android:id="@+id/labelStockAvailable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:text="@string/stockAvailableDetail"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -100,8 +106,8 @@
         android:id="@+id/stockAvailable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        tools:text="5000 unidades"
+        android:layout_marginStart="10dp"
+        android:text="5000 unidades"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="@+id/labelStockAvailable"
         app:layout_constraintStart_toEndOf="@+id/labelStockAvailable"
@@ -111,7 +117,8 @@
         android:id="@+id/labelDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="19sp"
         android:text="@string/descriptionDetail"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -121,7 +128,8 @@
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:text="Esta batidora industrial Mondial Práctica es perfecta para preparar grandes cantidades de mezclas en pocos minutos. Se destaca por su potencia y capacidad de procesar ingredientes. Te permitirá acelerar la producción y aumentar la eficiencia del trabajo, ¡más preparaciones en menos tiempo! La batidora Mondial Práctica cuenta con soporte y bowl integrados que mantienen fijo el producto y facilitan su uso, ya que no es necesario estar pendiente de su funcionamiento. Ahorrá tiempo y ganá en resultados deliciosos. Además incluye batidores de acero cromado."
+        android:layout_marginTop="10dp"
+        android:text="Esta batidora industrial Mondial Práctica es perfecta para preparar grandes cantidades de mezclas en pocos minutos. Se destaca por su potencia y capacidad de procesar ingredientes. Te permitirá acelerar la producción y aumentar la eficiencia del trabajo, ¡más preparaciones en menos tiempo! La batidora Mondial Práctica cuenta con soporte y bowl integrados que mantienen fijo el producto y facilitan su uso, ya que no es necesario estar pendiente de su funcionamiento. Ahorrá tiempo y ganá en resultados deliciosos. Además incluye batidores de acero cromado."
         app:layout_constraintEnd_toStartOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/labelDescription"
