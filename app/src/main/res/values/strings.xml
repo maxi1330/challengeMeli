@@ -5,4 +5,5 @@
     <string name="separatorDetail">|</string>
     <string name="stockAvailableDetail">Stock disponible:</string>
     <string name="descriptionDetail">Descripción:</string>
+    <string name="msj_occurio_un_error">Ah ocurrido un error, por favor intentalo mas tarde.</string>
 </resources>
