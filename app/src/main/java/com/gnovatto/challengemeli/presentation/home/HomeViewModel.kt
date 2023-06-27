@@ -11,6 +11,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeState(isLoading = true))
     val uiState: StateFlow<HomeState> = _uiState
+
+
+
 }
 
 data class HomeState(

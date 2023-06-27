@@ -1,14 +1,12 @@
 package com.gnovatto.challengemeli.presentation.home
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import com.gnovatto.challengemeli.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -30,11 +28,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun setSearch(){
-        val navController = findNavController()
-        _binding?.searchProduct?.setOnEditorActionListener { _, actionId, _ ->
+        _binding?.searchProduct?.setOnEditorActionListener { text, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment()
-                navController.navigate(action)
+                Toast.makeText(context,text.text,Toast.LENGTH_SHORT).show()
+//                val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment()
+//                findNavController().navigate(action)
                 true
             } else {
                 Toast.makeText(context,"false",Toast.LENGTH_SHORT).show()
