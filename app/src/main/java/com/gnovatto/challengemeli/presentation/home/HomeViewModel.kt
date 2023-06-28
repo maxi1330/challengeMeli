@@ -18,7 +18,7 @@ class HomeViewModel @Inject constructor(
     private val productsUsesCase: ProductsUsesCase,
     ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading(true))
+    private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading(false))
     val uiState: StateFlow<HomeState> = _uiState
 
     private var lastQuery = ""

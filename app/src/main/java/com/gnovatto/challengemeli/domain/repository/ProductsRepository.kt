@@ -10,6 +10,8 @@ class ProductsRepository @Inject constructor(
 //    private val productService: null
 ) {
     suspend fun getFilteredProducts(query: String, page: Int): Flow<ResultState<List<ProductModel>, String>> = flow {
-        emit(ResultState.Error("Hola"))
+        emit(ResultState.Success(listOf( ProductModel("1", "Batidora De Mano Con Bowl Mondial B05np 350w", "http://http2.mlstatic.com/D_613761-MLA43972286206_112020-I.jpg", "New", "category1", "USD", "10.99", 50, 100),
+            ProductModel("2", "Batidora De Mano Con Bowl Mondial B05np 350w", "http://http2.mlstatic.com/D_613761-MLA43972286206_112020-I.jpg", "New", "category1", "USD", "10.99", 50, 100),
+            ProductModel("3", "Batidora De Mano Con Bowl Mondial B05np 350w", "http://http2.mlstatic.com/D_613761-MLA43972286206_112020-I.jpg", "New", "category1", "USD", "10.99", 50, 100))))
     }
 }

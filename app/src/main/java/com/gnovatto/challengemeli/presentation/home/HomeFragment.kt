@@ -5,29 +5,48 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.gnovatto.challengemeli.databinding.FragmentHomeBinding
+import com.gnovatto.challengemeli.domain.model.ProductModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener{
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private lateinit var productsAdapter: ProductsAdapter
 
-    @Inject
-    lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+        setRecyclerProducts()
         setObservers()
         setSearch()
         return binding.root
+    }
+
+    private fun setRecyclerProducts() {
+        productsAdapter = ProductsAdapter(this)
+        binding.recyclerViewProducts.adapter = productsAdapter
+        binding.recyclerViewProducts.layoutManager = LinearLayoutManager(requireContext())
+        val dividerItemDecoration = DividerItemDecoration(
+            context,
+            (binding.recyclerViewProducts.layoutManager as LinearLayoutManager).orientation
+        )
+        binding.recyclerViewProducts.addItemDecoration(dividerItemDecoration)
     }
 
     private fun setObservers() {
@@ -39,15 +58,12 @@ class HomeFragment : Fragment() {
                         showLoading(state.isLoading)
                     }
                     is HomeState.NewProducts -> {
-                        // Manejar el estado de nuevos productos
-                        displayNewProducts(state.products)
+                        productsAdapter.setNewProductList(state.products)
                     }
                     is HomeState.MoreProducts -> {
-                        // Manejar el estado de más productos
-                        displayMoreProducts(state.products)
+                        productsAdapter.setMoreProductList(state.products)
                     }
                     is HomeState.Error -> {
-                        // Manejar el estado de error
                         showError(state.message)
                     }
                 }
@@ -86,8 +102,12 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onItemClick(product: ProductModel) {
+        Toast.makeText(context,product.title,Toast.LENGTH_SHORT).show()
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment()
+        findNavController().navigate(action)
+    }
+
 }
 
 
-//                val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment()
-//                findNavController().navigate(action)
