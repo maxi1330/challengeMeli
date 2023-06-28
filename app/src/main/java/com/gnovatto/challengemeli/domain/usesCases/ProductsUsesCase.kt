@@ -1,6 +1,6 @@
 package com.gnovatto.challengemeli.domain.usesCases
 
-import com.gnovatto.challengemeli.common.ResultState
+import com.gnovatto.challengemeli.domain.model.ResultState
 import com.gnovatto.challengemeli.domain.model.ProductModel
 import com.gnovatto.challengemeli.domain.repository.ProductsRepository
 import kotlinx.coroutines.flow.Flow

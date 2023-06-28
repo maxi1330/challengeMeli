@@ -49,6 +49,17 @@ class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener{
         binding.recyclerViewProducts.addItemDecoration(dividerItemDecoration)
     }
 
+    private fun setSearch(){
+        _binding?.searchProduct?.setOnEditorActionListener { text, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                viewModel.getMoreProducts(text.text.toString())
+                true
+            } else {
+                false
+            }
+        }
+    }
+
     private fun setObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
@@ -91,20 +102,9 @@ class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener{
         _binding = null
     }
 
-    private fun setSearch(){
-        _binding?.searchProduct?.setOnEditorActionListener { text, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                viewModel.getMoreProducts(text.toString())
-                true
-            } else {
-                false
-            }
-        }
-    }
 
     override fun onItemClick(product: ProductModel) {
-        Toast.makeText(context,product.title,Toast.LENGTH_SHORT).show()
-        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment()
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(product)
         findNavController().navigate(action)
     }
 

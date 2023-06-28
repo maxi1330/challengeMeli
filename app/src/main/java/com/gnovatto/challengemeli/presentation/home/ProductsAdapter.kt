@@ -46,7 +46,7 @@ class ProductsAdapter (private val listener: OnItemClickListener) : RecyclerView
              binding.title.text = product.title
              binding.price.text = "${product.currencyId} ${product.price}"
              Glide.with(itemView)
-                 .load(product.productImage)
+                 .load(product.thumbnail)
                  .into(binding.productImage)
 
              itemView.setOnClickListener {

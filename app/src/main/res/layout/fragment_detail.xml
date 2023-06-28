@@ -37,7 +37,7 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/appBar"
-        android:text="Nuevo" />
+        tools:text="Nuevo" />
 
     <TextView
         android:id="@+id/separator"
@@ -57,7 +57,7 @@
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/separator"
         app:layout_constraintTop_toTopOf="@+id/separator"
-        android:text="500 vendidos" />
+        tools:text="500 vendidos" />
 
     <TextView
         android:id="@+id/title"
@@ -65,14 +65,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:layout_constraintHorizontal_bias="0"
-        android:text="Batidora De Mano Con Bowl Mondial B05np 350wf"
+        tools:text="Batidora De Mano Con Bowl Mondial B05np 350wf"
         android:textSize="19sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/condition" />
 
     <ImageView
-        android:id="@+id/linearLayoutCompat"
+        android:id="@+id/imageProductDetail"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginTop="5dp"
@@ -87,11 +87,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_margin="10dp"
-        android:text="$ 8.026"
+        tools:text="$ 8.026"
         android:textStyle="bold"
         android:textSize="32sp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
+        app:layout_constraintTop_toBottomOf="@+id/imageProductDetail" />
 
     <TextView
         android:id="@+id/labelStockAvailable"
@@ -107,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="5000 unidades"
+        tools:text="5000 unidades"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="@+id/labelStockAvailable"
         app:layout_constraintStart_toEndOf="@+id/labelStockAvailable"

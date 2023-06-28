@@ -24,5 +24,9 @@
         android:id="@+id/detailFragment"
         android:name="com.gnovatto.challengemeli.presentation.detail.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="product"
+            app:argType="com.gnovatto.challengemeli.domain.model.ProductModel" />
+    </fragment>
 </navigation>

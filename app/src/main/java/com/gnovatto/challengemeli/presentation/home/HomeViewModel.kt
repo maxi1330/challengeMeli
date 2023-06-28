@@ -1,8 +1,9 @@
 package com.gnovatto.challengemeli.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gnovatto.challengemeli.common.ResultState
+import com.gnovatto.challengemeli.domain.model.ResultState
 import com.gnovatto.challengemeli.domain.model.ProductModel
 import com.gnovatto.challengemeli.domain.usesCases.ProductsUsesCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +26,6 @@ class HomeViewModel @Inject constructor(
     private var page = 0
     fun getMoreProducts(query: String){
         viewModelScope.launch {
-            validateQuery(query)
             productsUsesCase
                 .invoke(query, page)
                 .onStart { showLoading(true) }
