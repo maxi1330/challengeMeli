@@ -1,8 +1,8 @@
 package com.gnovatto.challengemeli.presentation.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.gnovatto.challengemeli.common.Logger
 import com.gnovatto.challengemeli.domain.model.ResultState
 import com.gnovatto.challengemeli.domain.model.ProductModel
 import com.gnovatto.challengemeli.domain.usesCases.ProductsUsesCase
@@ -19,15 +19,19 @@ class HomeViewModel @Inject constructor(
     private val productsUsesCase: ProductsUsesCase,
     ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading(false))
-    val uiState: StateFlow<HomeState> = _uiState
+    private val _uiStateHome = MutableStateFlow<HomeState>(HomeState.Loading(false))
+    val uiStateHome: StateFlow<HomeState> = _uiStateHome
 
     private var lastQuery = ""
     private var page = 0
     fun getMoreProducts(query: String){
+        validateQuery(query)
+        Logger.debug("query: $query")
+        Logger.debug("lastQuery: $lastQuery")
+        Logger.debug("page: $page")
         viewModelScope.launch {
             productsUsesCase
-                .invoke(query, page)
+                .invoke(lastQuery, page)
                 .onStart { showLoading(true) }
                 .catch { error ->
                     showLoading(false)
@@ -37,6 +41,7 @@ class HomeViewModel @Inject constructor(
                     showLoading(false)
                     when (response) {
                         is ResultState.Success -> {
+                            Logger.debug(response.data.toString())
                             if(page == 0){
                                 newProducts(response.data)
                             } else {
@@ -50,7 +55,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun validateQuery(query: String){
-        if (lastQuery.lowercase() != query.lowercase()){
+        if (query.isNotEmpty() && lastQuery.lowercase() != query.lowercase()){
             reset(query)
         } else {
             page++
@@ -63,19 +68,19 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun showError(message: String) {
-        _uiState.value = HomeState.Error(message)
+        _uiStateHome.value = HomeState.Error(message)
     }
 
     private fun showLoading(loading: Boolean) {
-        _uiState.value = HomeState.Loading(loading)
+        _uiStateHome.value = HomeState.Loading(loading)
     }
 
     private fun moreProducts(products: List<ProductModel>) {
-        _uiState.value = HomeState.MoreProducts(products)
+        _uiStateHome.value = HomeState.MoreProducts(products)
     }
 
     private fun newProducts(products: List<ProductModel>) {
-        _uiState.value = HomeState.NewProducts(products)
+        _uiStateHome.value = HomeState.NewProducts(products)
     }
 
 }

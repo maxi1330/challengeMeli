@@ -76,7 +76,8 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginTop="5dp"
-        android:src="@drawable/batidora"
+        tools:src="@drawable/batidora"
+        android:contentDescription="@string/content_description_product_image"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -108,7 +109,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         tools:text="5000 unidades"
-        android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="@+id/labelStockAvailable"
         app:layout_constraintStart_toEndOf="@+id/labelStockAvailable"
         app:layout_constraintTop_toTopOf="@+id/labelStockAvailable" />
@@ -129,14 +129,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Esta batidora industrial Mondial Práctica es perfecta para preparar grandes cantidades de mezclas en pocos minutos. Se destaca por su potencia y capacidad de procesar ingredientes. Te permitirá acelerar la producción y aumentar la eficiencia del trabajo, ¡más preparaciones en menos tiempo! La batidora Mondial Práctica cuenta con soporte y bowl integrados que mantienen fijo el producto y facilitan su uso, ya que no es necesario estar pendiente de su funcionamiento. Ahorrá tiempo y ganá en resultados deliciosos. Además incluye batidores de acero cromado."
+        tools:text="Esta batidora industrial Mondial Práctica es perfecta para preparar grandes cantidades de mezclas en pocos minutos. Se destaca por su potencia y capacidad de procesar ingredientes. Te permitirá acelerar la producción y aumentar la eficiencia del trabajo, ¡más preparaciones en menos tiempo! La batidora Mondial Práctica cuenta con soporte y bowl integrados que mantienen fijo el producto y facilitan su uso, ya que no es necesario estar pendiente de su funcionamiento. Ahorrá tiempo y ganá en resultados deliciosos. Además incluye batidores de acero cromado."
         app:layout_constraintEnd_toStartOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/labelDescription"
         app:layout_constraintVertical_bias="0"/>
 
     <ProgressBar
-        android:id="@+id/progressBarHome"
+        android:id="@+id/progressBarDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -148,13 +148,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/messageError"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" android:visibility="gone">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/imgError"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/alert_circle_outline"
+            android:contentDescription="@string/content_description_image_error"
             app:layout_constraintBottom_toTopOf="@+id/msjError"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

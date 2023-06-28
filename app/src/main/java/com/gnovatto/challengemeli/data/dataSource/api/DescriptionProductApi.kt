@@ -1,9 +1,8 @@
 package com.gnovatto.challengemeli.data.dataSource.api
 
-import com.gnovatto.challengemeli.domain.model.ProductSearchResponse
+import com.gnovatto.challengemeli.domain.model.ProductDescriptionResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface DescriptionProductApi {
 
@@ -14,6 +13,6 @@ interface DescriptionProductApi {
     @GET("/items/{ID_PRODUCTO}/description")
     suspend fun getProductsDescription(
         @Path("ID_PRODUCTO") productId: String,
-    ): ProductSearchResponse
+    ): ProductDescriptionResponse
 
 }

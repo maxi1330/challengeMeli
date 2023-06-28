@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.gnovatto.challengemeli.common.Utils
 import com.gnovatto.challengemeli.databinding.ItemSearchBinding
 import com.gnovatto.challengemeli.domain.model.ProductModel
 
@@ -44,7 +45,7 @@ class ProductsAdapter (private val listener: OnItemClickListener) : RecyclerView
 
          fun bind (product: ProductModel) {
              binding.title.text = product.title
-             binding.price.text = "${product.currencyId} ${product.price}"
+             binding.price.text = Utils.formatPrice(product.currencyId,product.price)
              Glide.with(itemView)
                  .load(product.thumbnail)
                  .into(binding.productImage)
