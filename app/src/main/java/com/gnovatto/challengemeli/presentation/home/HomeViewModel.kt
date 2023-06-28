@@ -4,13 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gnovatto.challengemeli.common.ResultState
 import com.gnovatto.challengemeli.domain.model.ProductModel
-import com.gnovatto.challengemeli.domain.model.ProductsDTO
 import com.gnovatto.challengemeli.domain.usesCases.ProductsUsesCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,10 +18,9 @@ class HomeViewModel @Inject constructor(
     private val productsUsesCase: ProductsUsesCase,
     ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeState(isLoading = true))
+    private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading(true))
     val uiState: StateFlow<HomeState> = _uiState
 
-    private var productList = mutableListOf<ProductModel>()
     private var lastQuery = ""
     private var page = 0
     fun getMoreProducts(query: String){
@@ -39,7 +36,13 @@ class HomeViewModel @Inject constructor(
                 .collect { response ->
                     showLoading(false)
                     when (response) {
-                        is ResultState.Success -> addProductsToList(response.data)
+                        is ResultState.Success -> {
+                            if(page == 0){
+                                newProducts(response.data)
+                            } else {
+                                moreProducts(response.data)
+                            }
+                        }
                         is ResultState.Error -> showError(response.msjError)
                     }
                 }
@@ -57,28 +60,29 @@ class HomeViewModel @Inject constructor(
     private fun reset(query: String){
         page = 0
         lastQuery = query
-        productList = emptyList<ProductModel>().toMutableList()
     }
 
     private fun showError(message: String) {
-        _uiState.value = HomeState(errorMessage = message);
+        _uiState.value = HomeState.Error(message)
     }
 
     private fun showLoading(loading: Boolean) {
-        _uiState.value = HomeState(isLoading = loading);
+        _uiState.value = HomeState.Loading(loading)
     }
 
-    private fun addProductsToList(products: List<ProductModel>) {
-        productList.addAll(products)
-        _uiState.value = HomeState(productList = productList)
+    private fun moreProducts(products: List<ProductModel>) {
+        _uiState.value = HomeState.MoreProducts(products)
+    }
+
+    private fun newProducts(products: List<ProductModel>) {
+        _uiState.value = HomeState.NewProducts(products)
     }
 
 }
 
-data class HomeState(
-    val isLoading: Boolean = false,
-    val isNewQuery: Boolean = true,
-    val newProducts: Boolean = false,
-    val errorMessage: String = "",
-    val productList: List<ProductModel> = emptyList()
-)
+sealed class HomeState {
+    data class Loading(val isLoading: Boolean) : HomeState()
+    data class NewProducts(val products: List<ProductModel>) : HomeState()
+    data class MoreProducts(val products: List<ProductModel>) : HomeState()
+    data class Error(val message: String) : HomeState()
+}
