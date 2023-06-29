@@ -30,12 +30,11 @@ class HomeViewModel @Inject constructor(
         Logger.debug("lastQuery: $lastQuery")
         Logger.debug("page: $page")
         viewModelScope.launch {
-            productsUsesCase
-                .invoke(lastQuery, page)
+            productsUsesCase(lastQuery, page)
                 .onStart { showLoading(true) }
-                .catch { error ->
+                .catch {e ->
                     showLoading(false)
-                    showError("")
+                    showError(e.message.toString())
                 }
                 .collect { response ->
                     showLoading(false)
@@ -48,7 +47,7 @@ class HomeViewModel @Inject constructor(
                                 moreProducts(response.data)
                             }
                         }
-                        is ResultState.Error -> showError(response.msjError)
+                        is ResultState.Error -> showError(response.message)
                     }
                 }
         }

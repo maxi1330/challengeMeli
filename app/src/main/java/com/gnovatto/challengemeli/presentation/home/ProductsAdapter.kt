@@ -1,25 +1,24 @@
 package com.gnovatto.challengemeli.presentation.home
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.gnovatto.challengemeli.common.Utils
+import com.gnovatto.challengemeli.common.extensions.formatPrice
 import com.gnovatto.challengemeli.databinding.ItemSearchBinding
 import com.gnovatto.challengemeli.domain.model.ProductModel
 
-class ProductsAdapter (private val listener: OnItemClickListener) : RecyclerView.Adapter<ProductsAdapter.MyViewHolder>() {
+class ProductsAdapter (private val listener: OnItemClickListener) : RecyclerView.Adapter<ProductsAdapter.ProductViewHolder>() {
 
     private val productList = mutableListOf<ProductModel>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemSearchBinding.inflate(inflater, parent, false)
-        return MyViewHolder(binding, this)
+        return ProductViewHolder(binding, this)
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val currentItem = productList[position]
         holder.bind(currentItem)
     }
@@ -28,24 +27,22 @@ class ProductsAdapter (private val listener: OnItemClickListener) : RecyclerView
         return productList.size
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun setNewProductList(data: List<ProductModel>) {
         productList.clear()
         productList.addAll(data)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0,data.size)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun setMoreProductList(data: List<ProductModel>) {
         productList.addAll(data)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(productList.size, data.size)
     }
 
-    class MyViewHolder(val binding: ItemSearchBinding, private val adapter: ProductsAdapter) : RecyclerView.ViewHolder(binding.root) {
+    class ProductViewHolder(val binding: ItemSearchBinding, private val adapter: ProductsAdapter) : RecyclerView.ViewHolder(binding.root) {
 
          fun bind (product: ProductModel) {
              binding.title.text = product.title
-             binding.price.text = Utils.formatPrice(product.currencyId,product.price)
+             binding.price.text = product.price.formatPrice(product.currencyId)
              Glide.with(itemView)
                  .load(product.thumbnail)
                  .into(binding.productImage)
@@ -53,8 +50,8 @@ class ProductsAdapter (private val listener: OnItemClickListener) : RecyclerView
              itemView.setOnClickListener {
                  val position = adapterPosition
                  if (position != RecyclerView.NO_POSITION) {
-                     val product = adapter.productList[position]
-                     adapter.listener.onItemClick(product)
+                     val productItem = adapter.productList[position]
+                     adapter.listener.onItemClick(productItem)
                  }
              }
         }

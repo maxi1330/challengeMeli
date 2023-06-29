@@ -11,6 +11,7 @@ interface ProductSearchApi {
      * @param page pagina
      * @param limit limite de productos que se busca.
      */
+    @Throws(Exception::class)
     @GET("/sites/MLA/search")
     suspend fun getProducts(
         @Query("q") query: String,

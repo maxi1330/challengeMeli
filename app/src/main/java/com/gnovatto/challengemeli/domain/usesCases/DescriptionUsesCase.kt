@@ -10,6 +10,6 @@ class DescriptionUsesCase @Inject constructor(
     private val productsRepository: ProductsRepository
 ){
     suspend operator fun invoke(productId: String): Flow<ResultState<ProductDescriptionResponse, String>> {
-        return productsRepository.getProductDetail(productId)
+        return productsRepository.getProductDescription(productId)
     }
 }

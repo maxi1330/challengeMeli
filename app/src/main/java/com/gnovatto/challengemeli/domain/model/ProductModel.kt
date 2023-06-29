@@ -1,9 +1,10 @@
 package com.gnovatto.challengemeli.domain.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
+import kotlinx.parcelize.Parcelize
 
-
+@Parcelize
 data class ProductModel(
     @SerializedName("id")
     val id: String,
@@ -23,4 +24,4 @@ data class ProductModel(
     val soldQuantity : Int,
     @SerializedName("available_quantity")
     val availableQuantity : Int,
-) : Serializable
+) : Parcelable

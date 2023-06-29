@@ -38,7 +38,7 @@ class DetailViewModel @Inject constructor(
                             Logger.debug("Descripcion: ${response.data.plainText}")
                             setDescription(response.data.plainText)
                         }
-                        is ResultState.Error -> showError(response.msjError)
+                        is ResultState.Error -> showError(response.message)
                     }
                 }
         }

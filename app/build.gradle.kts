@@ -5,6 +5,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -64,9 +65,11 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.46.1")
     kapt("com.google.dagger:hilt-compiler:2.46.1")
+
     // For instrumentation tests
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.46.1")
     kaptAndroidTest("com.google.dagger:hilt-compiler:2.46.1")
+
     // For local unit tests
     testImplementation("com.google.dagger:hilt-android-testing:2.46.1")
     kaptTest("com.google.dagger:hilt-compiler:2.46.1")
@@ -78,6 +81,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     testImplementation("org.mockito:mockito-core:3.12.4")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 
 }
 

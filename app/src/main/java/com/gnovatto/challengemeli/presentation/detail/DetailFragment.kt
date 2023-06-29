@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.gnovatto.challengemeli.R
 import com.gnovatto.challengemeli.common.Logger
 import com.gnovatto.challengemeli.common.Utils
+import com.gnovatto.challengemeli.common.extensions.formatPrice
 import com.gnovatto.challengemeli.databinding.FragmentDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -68,14 +69,17 @@ class DetailFragment : Fragment() {
     }
 
     private fun setProductData() {
-        binding.condition.text = Utils.formatCondition(args.product.condition)
-        binding.soldQuantity.text = Utils.formatSold(args.product.soldQuantity)
-        binding.title.text = args.product.title
-        binding.price.text = Utils.formatPrice(args.product.currencyId,args.product.price)
-        binding.stockAvailable.text = args.product.availableQuantity.toString()
-        Glide.with(requireContext())
-            .load(args.product.thumbnail)
-            .into(binding.imageProductDetail)
+        with(args.product) {
+            binding.condition.text = Utils.formatCondition(condition)
+            binding.soldQuantity.text = Utils.formatSold(soldQuantity)
+            binding.title.text = title
+            binding.price.text = args.product.price.formatPrice(currencyId)
+            binding.stockAvailable.text = availableQuantity.toString()
+            Glide.with(requireContext())
+                .load(thumbnail)
+                .into(binding.imageProductDetail)
+        }
+
     }
 
     private fun setToolbar() {
