@@ -6,9 +6,7 @@ object LoggerImpl : Logger{
     private const val TAG = "Logger"
 
     override fun debug(message: String) {
-//        if (BuildConfig.DEBUG) {
         Log.d(TAG, message)
-//        }
     }
 
     override fun info(message: String) {

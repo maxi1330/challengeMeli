@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gnovatto.challengemeli.common.Logger
 import com.gnovatto.challengemeli.common.LoggerImpl
+import com.gnovatto.challengemeli.domain.model.ProductModel
 import com.gnovatto.challengemeli.domain.model.ResultState
-import com.gnovatto.challengemeli.domain.usesCases.DescriptionUsesCase
+import com.gnovatto.challengemeli.domain.usesCases.DetailUsesCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ import javax.inject.Named
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val descriptionUsesCase: DescriptionUsesCase,
+    private val descriptionUsesCase: DetailUsesCase,
     @Named("dispatcher") private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
@@ -27,7 +28,13 @@ class DetailViewModel @Inject constructor(
     val uiStateDetail: StateFlow<DetailState> = _uiStateDetail
 
     private val logger : Logger = LoggerImpl
-    fun getDescription(productId: String) {
+
+    /**
+     * Obtiene los detalles de un producto.
+     *
+     * @param productId El ID del producto.
+     */
+    fun getDetail(productId: String) {
         logger.debug("productId: $productId")
         viewModelScope.launch(dispatcher) {
             descriptionUsesCase
@@ -41,8 +48,8 @@ class DetailViewModel @Inject constructor(
                     showLoading(false)
                     when (response) {
                         is ResultState.Success -> {
-                            logger.debug("Descripcion: ${response.data.plainText}")
-                            setDescription(response.data.plainText)
+                            logger.debug("Detail: ${response.data}")
+                            setDetail(response.data)
                         }
 
                         is ResultState.Error -> showError(response.message)
@@ -59,13 +66,16 @@ class DetailViewModel @Inject constructor(
         _uiStateDetail.value = DetailState.Loading(loading)
     }
 
-    private fun setDescription(description: String) {
-        _uiStateDetail.value = DetailState.Description(description)
+    private fun setDetail(detail: ProductModel) {
+        _uiStateDetail.value = DetailState.Detail(detail)
     }
 }
 
+/**
+ * Representa el estado de la UI.
+ */
 sealed class DetailState {
     data class Loading(val isLoading: Boolean) : DetailState()
-    data class Description(val description: String) : DetailState()
+    data class Detail(val detail: ProductModel) : DetailState()
     data class Error(val message: String) : DetailState()
 }

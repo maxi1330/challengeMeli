@@ -1,6 +1,6 @@
 package com.gnovatto.challengemeli.di
 
-import com.gnovatto.challengemeli.data.source.DescriptionProductApi
+import com.gnovatto.challengemeli.data.source.DetailProductApi
 import com.gnovatto.challengemeli.data.source.ProductSearchApi
 import dagger.Module
 import dagger.Provides
@@ -13,14 +13,27 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
+/**
+ * Módulo de inyección de dependencias.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class Module {
 
+    /**
+     * Proporciona un dispatch entrada/salida.
+     *
+     * @return El dispatch
+     */
     @Provides
     @Named("dispatcher")
     fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
+    /**
+     * Proporciona una instancia de Retrofit
+     *
+     * @return La instancia de Retrofit.
+     */
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit {
@@ -30,16 +43,28 @@ class Module {
             .build()
     }
 
+    /**
+     * Proporciona una instancia de ProductSearchApi para realizar búsquedas de productos.
+     *
+     * @param retrofit La instancia de Retrofit.
+     * @return La instancia de ProductSearchApi.
+     */
     @Provides
     @Singleton
     fun provideSearchProductApi(retrofit: Retrofit): ProductSearchApi {
         return retrofit.create(ProductSearchApi::class.java)
     }
 
+    /**
+     * Proporciona una instancia de DetailProductApi para obtener detalles de productos.
+     *
+     * @param retrofit La instancia de Retrofit.
+     * @return La instancia de DetailProductApi.
+     */
     @Provides
     @Singleton
-    fun provideDescriptionProductApi(retrofit: Retrofit): DescriptionProductApi {
-        return retrofit.create(DescriptionProductApi::class.java)
+    fun provideDescriptionProductApi(retrofit: Retrofit): DetailProductApi {
+        return retrofit.create(DetailProductApi::class.java)
     }
 
     companion object {

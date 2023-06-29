@@ -2,9 +2,10 @@ package com.gnovatto.challengemeli.domain.repository
 
 import com.gnovatto.challengemeli.common.Constants
 import com.gnovatto.challengemeli.createMock
-import com.gnovatto.challengemeli.data.source.DescriptionProductApi
+import com.gnovatto.challengemeli.data.source.DetailProductApi
 import com.gnovatto.challengemeli.data.source.ProductSearchApi
 import com.gnovatto.challengemeli.data.repository.ProductsRepositoryImpl
+import com.gnovatto.challengemeli.domain.model.ProductDescriptionResponse
 import com.gnovatto.challengemeli.domain.model.ProductModel
 import com.gnovatto.challengemeli.domain.model.ProductSearchResponse
 import com.gnovatto.challengemeli.domain.model.ResultState
@@ -32,14 +33,14 @@ class ProductsRepositoryImplTest {
     private lateinit var provideSearchProductApi: ProductSearchApi
 
     @Mock
-    private lateinit var provideDescriptionProductApi: DescriptionProductApi
+    private lateinit var provideDetailProductApi: DetailProductApi
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         productsRepositoryImpl = ProductsRepositoryImpl(
             provideSearchProductApi,
-            provideDescriptionProductApi
+            provideDetailProductApi
         )
     }
 
@@ -114,6 +115,103 @@ class ProductsRepositoryImplTest {
             assertTrue(it is ResultState.Error)
             assertEquals(Constants.ERROR_HTTP_NOT_FOUND, (it as ResultState.Error).message)
             verify(provideSearchProductApi, times(1)).getProducts(anyString(), anyInt(), anyInt())
+        }
+    }
+
+    @Test
+    fun `getProductDetail should return successful`() = runTest {
+        // Given
+        val productId = "1234"
+        val description = "Descripcion test"
+        val product = ProductModel()
+        val productDescriptionResponse = ProductDescriptionResponse(description,"1234","1234")
+
+        Mockito.`when`(provideDetailProductApi.getDetailProduct(anyString()))
+            .thenReturn(product)
+
+        Mockito.`when`(provideDetailProductApi.getProductsDescription(anyString()))
+            .thenReturn(productDescriptionResponse)
+
+        // When
+        val result = productsRepositoryImpl.getProductDetail(productId)
+
+        // Then
+        result.collect {
+            assertTrue(it is ResultState.Success)
+            assertEquals(description, (it as ResultState.Success).data.description)
+            verify(provideDetailProductApi, times(1)).getDetailProduct(anyString())
+        }
+
+    }
+    @Test
+    fun `getProductDetail should throw IOException`() = runTest {
+        // Given
+        val productId = "1234"
+        val description = "Descripcion test"
+        val productDescriptionResponse = ProductDescriptionResponse(description,"1234","1234")
+
+        Mockito.`when`(provideDetailProductApi.getDetailProduct(anyString()))
+            .thenThrow(IOException::class.java)
+
+        Mockito.`when`(provideDetailProductApi.getProductsDescription(anyString()))
+            .thenReturn(productDescriptionResponse)
+
+        // When
+        val result = productsRepositoryImpl.getProductDetail(productId)
+
+        // Then
+        result.collect {
+            assertTrue(it is ResultState.Error)
+            assertEquals(Constants.ERROR_IO_EXCEPTION, (it as ResultState.Error).message)
+            verify(provideDetailProductApi, times(1)).getDetailProduct(anyString())
+        }
+    }
+
+    @Test
+    fun `getProductDetail should throw HttpException`() = runTest {
+        // Given
+        val productId = "1234"
+        val description = "Descripcion test"
+        val productDescriptionResponse = ProductDescriptionResponse(description,"1234","1234")
+
+        Mockito.`when`(provideDetailProductApi.getDetailProduct(anyString()))
+            .thenThrow(HttpException::class.java)
+
+        Mockito.`when`(provideDetailProductApi.getProductsDescription(anyString()))
+            .thenReturn(productDescriptionResponse)
+
+        // When
+        val result = productsRepositoryImpl.getProductDetail(productId)
+
+        // Then
+        result.collect {
+            assertTrue(it is ResultState.Error)
+            assertEquals(Constants.ERROR_HTTP_EXCEPTION, (it as ResultState.Error).message)
+            verify(provideDetailProductApi, times(1)).getDetailProduct(anyString())
+        }
+    }
+
+    @Test
+    fun `getProductDetail should throw exception`() = runTest {
+        // Given
+        val productId = "1234"
+        val description = "Descripcion test"
+        val productDescriptionResponse = ProductDescriptionResponse(description,"1234","1234")
+
+        Mockito.`when`(provideDetailProductApi.getDetailProduct(anyString()))
+            .thenThrow(Exception::class.java)
+
+        Mockito.`when`(provideDetailProductApi.getProductsDescription(anyString()))
+            .thenReturn(productDescriptionResponse)
+
+        // When
+        val result = productsRepositoryImpl.getProductDetail(productId)
+
+        // Then
+        result.collect {
+            assertTrue(it is ResultState.Error)
+            assertEquals(Constants.ERROR_HTTP_NOT_FOUND, (it as ResultState.Error).message)
+            verify(provideDetailProductApi, times(1)).getDetailProduct(anyString())
         }
     }
 

@@ -9,4 +9,7 @@
     <string name="msj_error_description">La descripción no esta disponible en este momento.</string>
     <string name="content_description_image_error">imageError</string>
     <string name="content_description_product_image">productImage</string>
+    <string name="text_insert_product_name">Ingrese el nombre de un producto</string>
+    <string name="not_description">El vendedor no incluyo una descripción</string>
+    <string name="title_detail_page">Producto</string>
 </resources>

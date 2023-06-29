@@ -67,7 +67,7 @@ class HomeViewModelTest {
     fun `getMoreProducts should return MoreProducts`() = runTest(dispatcher) {
         // Given
         val query = ""
-        val page = 1
+        val page = 20
         val productList = mutableListOf<ProductModel>(createMock(), createMock(), createMock())
 
         Mockito.`when`(productsUsesCase.invoke("", page)).thenReturn(
@@ -89,7 +89,7 @@ class HomeViewModelTest {
     fun `getMoreProducts should return Error`() = runTest(dispatcher) {
         // Given
         val query = ""
-        val page = 1
+        val page = 20
         val message = "Error test"
 
         Mockito.`when`(productsUsesCase.invoke("", page)).thenReturn(

@@ -1,10 +1,12 @@
 package com.gnovatto.challengemeli.presentation.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -76,6 +78,7 @@ class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener {
     private fun setSearch() {
         _binding?.searchProduct?.setOnEditorActionListener { searchText, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                hideKeyboard(requireContext(), requireView())
                 logger.debug("Query seleccionada: ${searchText.text}")
                 viewModel.getMoreProducts(searchText.text.toString())
                 true
@@ -90,7 +93,7 @@ class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener {
             viewModel.uiStateHome.collect { state ->
                 when (state) {
                     is HomeState.Loading -> {
-                        resetViews()
+                        resetErrorViews()
                         showLoading(state.isLoading)
                         logger.debug("Loading: ${state.isLoading}")
                     }
@@ -122,18 +125,24 @@ class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener {
         binding.messageError.visibility = View.VISIBLE
     }
 
-    private fun resetViews() {
+    private fun resetErrorViews() {
         binding.messageError.visibility = View.GONE
         binding.recyclerViewProducts.visibility = View.VISIBLE
     }
 
     private fun showLoading(loading: Boolean) {
         binding.progressBarHome.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.messageError.visibility = View.GONE
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun hideKeyboard(context: Context, view: View) {
+        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 

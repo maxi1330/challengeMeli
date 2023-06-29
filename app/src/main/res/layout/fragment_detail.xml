@@ -29,9 +29,20 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBarDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,14 +53,21 @@
             android:layout_height="wrap_content"
             tools:context=".presentation.detail.DetailFragment">
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupLabels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="separator, labelStockAvailable, labelDescription"/>
+
+
             <TextView
                 android:id="@+id/condition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/appBar"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="Nuevo" />
 
             <TextView
@@ -86,8 +104,8 @@
 
             <ImageView
                 android:id="@+id/imageProductDetail"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="wrap_content"
+                android:layout_height="175dp"
                 android:layout_marginTop="5dp"
                 android:contentDescription="@string/content_description_product_image"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -148,16 +166,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/labelDescription"
                 app:layout_constraintVertical_bias="0"
                 tools:text="Esta batidora industrial Mondial Práctica es perfecta para preparar grandes cantidades de mezclas en pocos minutos. Se destaca por su potencia y capacidad de procesar ingredientes. Te permitirá acelerar la producción y aumentar la eficiencia del trabajo, ¡más preparaciones en menos tiempo! La batidora Mondial Práctica cuenta con soporte y bowl integrados que mantienen fijo el producto y facilitan su uso, ya que no es necesario estar pendiente de su funcionamiento. Ahorrá tiempo y ganá en resultados deliciosos. Además incluye batidores de acero cromado." />
-
-            <ProgressBar
-                android:id="@+id/progressBarDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"

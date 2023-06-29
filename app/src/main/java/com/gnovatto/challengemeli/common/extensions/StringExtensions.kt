@@ -1,11 +1,11 @@
 package com.gnovatto.challengemeli.common.extensions
 
 fun String.formatPrice(currency: String): String {
-    val amountFormated = formatNumber(this)
+    val amountFormatted = formatNumber(this)
     return when (currency) {
-        "ARS" -> "$ $amountFormated"
-        "USD" -> "u\$d $amountFormated"
-        else -> "$currency $amountFormated"
+        "ARS" -> "$ $amountFormatted"
+        "USD" -> "u\$d $amountFormatted"
+        else -> "$currency $amountFormatted"
     }
 }
 

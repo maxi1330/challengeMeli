@@ -6,11 +6,12 @@ import retrofit2.http.Query
 
 interface ProductSearchApi {
     /**
-     * Obtiene la lista de productos a partir de la query
-     * @param query query del producto para buscar
-     * @param page pagina
-     * @param limit limite de productos que se busca.
-     */
+    * Obtiene la lista de productos a partir de una consulta.
+    *
+    * @param query La consulta del producto a buscar.
+    * @param page El número de página.
+    * @param limit El límite de productos que se desea obtener.
+    */
     @Throws(Exception::class)
     @GET("/sites/MLA/search")
     suspend fun getProducts(

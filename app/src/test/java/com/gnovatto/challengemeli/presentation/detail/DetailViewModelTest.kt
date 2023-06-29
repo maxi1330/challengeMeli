@@ -3,13 +3,9 @@ package com.gnovatto.challengemeli.presentation.detail
 import com.gnovatto.challengemeli.TestLogger
 import com.gnovatto.challengemeli.common.Logger
 import com.gnovatto.challengemeli.createMock
-import com.gnovatto.challengemeli.domain.model.ProductDescriptionResponse
 import com.gnovatto.challengemeli.domain.model.ProductModel
 import com.gnovatto.challengemeli.domain.model.ResultState
-import com.gnovatto.challengemeli.domain.usesCases.DescriptionUsesCase
-import com.gnovatto.challengemeli.domain.usesCases.ProductsUsesCase
-import com.gnovatto.challengemeli.presentation.home.HomeState
-import com.gnovatto.challengemeli.presentation.home.HomeViewModel
+import com.gnovatto.challengemeli.domain.usesCases.DetailUsesCase
 import junit.framework.TestCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -18,7 +14,6 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -32,7 +27,7 @@ class HomeViewModelTest {
     private val dispatcher = UnconfinedTestDispatcher()
 
     @Mock
-    private lateinit var descriptionUsesCase: DescriptionUsesCase
+    private lateinit var descriptionUsesCase: DetailUsesCase
 
     private val logger: Logger = TestLogger()
 
@@ -47,27 +42,27 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `getDescription should return DetailState Description`() = runTest(dispatcher) {
+    fun `getDescription should return DetailState Detail`() = runTest(dispatcher) {
         // Given
         val productId = "1234"
-        val description = "Descripcion Test"
-        val lastUpdated = "1234"
-        val dateCreated = "1234"
+
+        val productModel = createMock<ProductModel>()
 
         Mockito.`when`(descriptionUsesCase.invoke(productId)).thenReturn(
-            flowOf(ResultState.Success(ProductDescriptionResponse(description,lastUpdated,dateCreated)))
+            flowOf(ResultState.Success(productModel))
         )
 
         // When
-        detailViewModel.getDescription(productId)
+        detailViewModel.getDetail(productId)
         runCurrent()
 
         // Then
         TestCase.assertEquals(
-            DetailState.Description(description),
+            DetailState.Detail(productModel),
             detailViewModel.uiStateDetail.value
         )
     }
+
     @Test
     fun `getDescription should return DetailState Error`() = runTest(dispatcher) {
         // Given
@@ -79,7 +74,7 @@ class HomeViewModelTest {
         )
 
         // When
-        detailViewModel.getDescription(productId)
+        detailViewModel.getDetail(productId)
         runCurrent()
 
         // Then

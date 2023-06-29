@@ -2,6 +2,7 @@ package com.gnovatto.challengemeli.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.gnovatto.challengemeli.common.Constants.Companion.LIMIT_PAGE
 import com.gnovatto.challengemeli.common.Logger
 import com.gnovatto.challengemeli.common.LoggerImpl
 import com.gnovatto.challengemeli.domain.model.ProductModel
@@ -30,6 +31,12 @@ class HomeViewModel @Inject constructor(
     private val logger : Logger = LoggerImpl
     private var lastQuery = ""
     private var page = 0
+
+    /**
+     * Obtiene más productos según la consulta especificada.
+     *
+     * @param query La consulta de búsqueda de productos.
+     */
     fun getMoreProducts(query: String) {
         validateQuery(query)
         logger.debug("query: $query")
@@ -65,7 +72,7 @@ class HomeViewModel @Inject constructor(
         if (query.isNotEmpty() && lastQuery.lowercase() != query.lowercase()) {
             reset(query)
         } else {
-            page++
+            page += LIMIT_PAGE
         }
     }
 
@@ -92,6 +99,9 @@ class HomeViewModel @Inject constructor(
 
 }
 
+/**
+ * Representa los diferentes estados de la pantalla home.
+ */
 sealed class HomeState {
     data class Loading(val isLoading: Boolean) : HomeState()
     data class NewProducts(val products: List<ProductModel>) : HomeState()

@@ -8,6 +8,14 @@ import com.gnovatto.challengemeli.common.extensions.formatPrice
 import com.gnovatto.challengemeli.databinding.ItemSearchBinding
 import com.gnovatto.challengemeli.domain.model.ProductModel
 
+/**
+ * Adaptador para mostrar una lista de productos en un RecyclerView.
+ *
+ * Este adaptador se encarga de gestionar los elementos de la lista de productos y de
+ * inflar las vistas correspondientes para cada elemento.
+ *
+ * @param listener El objeto que implementa la interfaz OnItemClickListener y maneja los eventos de clic.
+ */
 class ProductsAdapter(private val listener: OnItemClickListener) :
     RecyclerView.Adapter<ProductsAdapter.ProductViewHolder>() {
 
@@ -28,12 +36,22 @@ class ProductsAdapter(private val listener: OnItemClickListener) :
         return productList.size
     }
 
+    /**
+     * Establece una nueva lista de productos.
+     *
+     * @param data La nueva lista de productos.
+     */
     fun setNewProductList(data: List<ProductModel>) {
         productList.clear()
         productList.addAll(data)
         notifyItemRangeChanged(0, data.size)
     }
 
+    /**
+     * Agrega más productos a la lista existente en el adaptador.
+     *
+     * @param data La lista de productos a agregar.
+     */
     fun setMoreProductList(data: List<ProductModel>) {
         productList.addAll(data)
         notifyItemRangeInserted(productList.size, data.size)
@@ -42,6 +60,11 @@ class ProductsAdapter(private val listener: OnItemClickListener) :
     class ProductViewHolder(val binding: ItemSearchBinding, private val adapter: ProductsAdapter) :
         RecyclerView.ViewHolder(binding.root) {
 
+        /**
+         * Vincula los datos del producto al ViewHolder.
+         *
+         * @param product El objeto que contiene los datos del producto.
+         */
         fun bind(product: ProductModel) {
             binding.title.text = product.title
             binding.price.text = product.price.formatPrice(product.currencyId)
@@ -59,6 +82,9 @@ class ProductsAdapter(private val listener: OnItemClickListener) :
         }
     }
 
+    /**
+     * Interfaz para manejar los eventos de clic en los items del adaptador.
+     */
     interface OnItemClickListener {
         fun onItemClick(product: ProductModel)
     }

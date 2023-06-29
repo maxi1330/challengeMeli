@@ -7,7 +7,11 @@ class Utils {
         }
 
         fun formatSold(soldQuantity: Int): String {
-            return "$soldQuantity vendidos"
+            return if (soldQuantity > 5){
+                "+ $soldQuantity vendidos"
+            } else {
+                "$soldQuantity vendidos"
+            }
         }
 
     }

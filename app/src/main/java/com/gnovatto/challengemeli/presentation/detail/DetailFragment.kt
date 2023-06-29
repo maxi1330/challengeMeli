@@ -17,6 +17,7 @@ import com.gnovatto.challengemeli.common.LoggerImpl
 import com.gnovatto.challengemeli.common.Utils
 import com.gnovatto.challengemeli.common.extensions.formatPrice
 import com.gnovatto.challengemeli.databinding.FragmentDetailBinding
+import com.gnovatto.challengemeli.domain.model.ProductModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -38,8 +39,8 @@ class DetailFragment : Fragment() {
         viewModel = ViewModelProvider(this)[DetailViewModel::class.java]
         setObservers()
         setToolbar()
-        setProductData()
-        viewModel.getDescription(args.product.id)
+        viewModel.getDetail(args.product.id)
+        logger.debug("Ingreso pantalla detalle")
         return binding.root
     }
 
@@ -52,8 +53,8 @@ class DetailFragment : Fragment() {
                         logger.debug("Loading: ${state.isLoading}")
                     }
 
-                    is DetailState.Description -> {
-                        binding.description.text = state.description
+                    is DetailState.Detail -> {
+                        setProductData(state.detail)
                         logger.debug("Descripcion ok")
                     }
 
@@ -73,24 +74,27 @@ class DetailFragment : Fragment() {
         binding.progressBarDetail.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
-    private fun setProductData() {
-        with(args.product) {
+    private fun setProductData(product : ProductModel) {
+        with(product) {
             binding.condition.text = Utils.formatCondition(condition)
             binding.soldQuantity.text = Utils.formatSold(soldQuantity)
             binding.title.text = title
-            binding.price.text = args.product.price.formatPrice(currencyId)
+            binding.price.text = price.formatPrice(currencyId)
             binding.stockAvailable.text = availableQuantity.toString()
+            binding.description.text = description.ifEmpty { getString(R.string.not_description) }
             Glide.with(requireContext())
-                .load(thumbnail)
+                .load(if (pictures.isNotEmpty()) pictures[0].url else thumbnail)
                 .into(binding.imageProductDetail)
+            binding.groupLabels.visibility= View.VISIBLE
         }
-
+        showLoading(false)
     }
 
     private fun setToolbar() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.title = "Producto"
+        (activity as AppCompatActivity).supportActionBar?.title =
+            getString(R.string.title_detail_page)
 
         binding.toolbar.setNavigationIcon(R.drawable.arrow_left)
         binding.toolbar.setNavigationOnClickListener {
