@@ -13,19 +13,22 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gnovatto.challengemeli.common.Logger
+import com.gnovatto.challengemeli.common.LoggerImpl
 import com.gnovatto.challengemeli.databinding.FragmentHomeBinding
 import com.gnovatto.challengemeli.domain.model.ProductModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener{
-    private var _binding : FragmentHomeBinding? = null
+class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener {
+    private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var productsAdapter: ProductsAdapter
 
     private lateinit var viewModel: HomeViewModel
     private var isLoadingMoreItems = false
+
+    private val logger : Logger = LoggerImpl
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +65,7 @@ class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener{
                 val isNotLoading = !isLoadingMoreItems
 
                 if (isAtEnd && isNotLoading) {
-                    Logger.debug("Se piden mas productos")
+                    logger.debug("Se piden mas productos")
                     isLoadingMoreItems = true
                     viewModel.getMoreProducts("")
                 }
@@ -70,10 +73,10 @@ class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener{
         })
     }
 
-    private fun setSearch(){
+    private fun setSearch() {
         _binding?.searchProduct?.setOnEditorActionListener { searchText, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                Logger.debug("Query seleccionada: ${searchText.text}")
+                logger.debug("Query seleccionada: ${searchText.text}")
                 viewModel.getMoreProducts(searchText.text.toString())
                 true
             } else {
@@ -89,18 +92,21 @@ class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener{
                     is HomeState.Loading -> {
                         resetViews()
                         showLoading(state.isLoading)
-                        Logger.debug("Loading: ${state.isLoading}")
+                        logger.debug("Loading: ${state.isLoading}")
                     }
+
                     is HomeState.NewProducts -> {
                         productsAdapter.setNewProductList(state.products)
                         isLoadingMoreItems = false
-                        Logger.debug("Productos nuevos")
+                        logger.debug("Productos nuevos")
                     }
+
                     is HomeState.MoreProducts -> {
                         productsAdapter.setMoreProductList(state.products)
                         isLoadingMoreItems = false
-                        Logger.debug("Agregar productos")
+                        logger.debug("Agregar productos")
                     }
+
                     is HomeState.Error -> {
                         showError(state.message)
                         isLoadingMoreItems = false
@@ -116,13 +122,13 @@ class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener{
         binding.messageError.visibility = View.VISIBLE
     }
 
-    private fun resetViews(){
+    private fun resetViews() {
         binding.messageError.visibility = View.GONE
         binding.recyclerViewProducts.visibility = View.VISIBLE
     }
 
     private fun showLoading(loading: Boolean) {
-        binding.progressBarHome.visibility = if(loading) View.VISIBLE else View.GONE
+        binding.progressBarHome.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     override fun onDestroy() {
@@ -132,7 +138,7 @@ class HomeFragment : Fragment(), ProductsAdapter.OnItemClickListener{
 
 
     override fun onItemClick(product: ProductModel) {
-        Logger.debug("Item seleccionado: ${product.title}")
+        logger.debug("Item seleccionado: ${product.title}")
         val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(product)
         findNavController().navigate(action)
     }

@@ -3,27 +3,33 @@ package com.gnovatto.challengemeli.presentation.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gnovatto.challengemeli.common.Logger
+import com.gnovatto.challengemeli.common.LoggerImpl
 import com.gnovatto.challengemeli.domain.model.ResultState
 import com.gnovatto.challengemeli.domain.usesCases.DescriptionUsesCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val descriptionUsesCase: DescriptionUsesCase,
+    @Named("dispatcher") private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
     private val _uiStateDetail = MutableStateFlow<DetailState>(DetailState.Loading(false))
     val uiStateDetail: StateFlow<DetailState> = _uiStateDetail
 
-    fun getDescription(productId: String){
-        Logger.debug("productId: $productId")
-        viewModelScope.launch {
+    private val logger : Logger = LoggerImpl
+    fun getDescription(productId: String) {
+        logger.debug("productId: $productId")
+        viewModelScope.launch(dispatcher) {
             descriptionUsesCase
                 .invoke(productId)
                 .onStart { showLoading(true) }
@@ -35,9 +41,10 @@ class DetailViewModel @Inject constructor(
                     showLoading(false)
                     when (response) {
                         is ResultState.Success -> {
-                            Logger.debug("Descripcion: ${response.data.plainText}")
+                            logger.debug("Descripcion: ${response.data.plainText}")
                             setDescription(response.data.plainText)
                         }
+
                         is ResultState.Error -> showError(response.message)
                     }
                 }

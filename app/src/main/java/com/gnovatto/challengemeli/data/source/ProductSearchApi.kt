@@ -1,4 +1,4 @@
-package com.gnovatto.challengemeli.data.dataSource.api
+package com.gnovatto.challengemeli.data.source
 
 import com.gnovatto.challengemeli.domain.model.ProductSearchResponse
 import retrofit2.http.GET

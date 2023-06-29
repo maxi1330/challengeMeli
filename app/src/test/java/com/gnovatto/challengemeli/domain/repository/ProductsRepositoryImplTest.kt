@@ -2,8 +2,9 @@ package com.gnovatto.challengemeli.domain.repository
 
 import com.gnovatto.challengemeli.common.Constants
 import com.gnovatto.challengemeli.createMock
-import com.gnovatto.challengemeli.data.dataSource.api.DescriptionProductApi
-import com.gnovatto.challengemeli.data.dataSource.api.ProductSearchApi
+import com.gnovatto.challengemeli.data.source.DescriptionProductApi
+import com.gnovatto.challengemeli.data.source.ProductSearchApi
+import com.gnovatto.challengemeli.data.repository.ProductsRepositoryImpl
 import com.gnovatto.challengemeli.domain.model.ProductModel
 import com.gnovatto.challengemeli.domain.model.ProductSearchResponse
 import com.gnovatto.challengemeli.domain.model.ResultState
@@ -24,38 +25,40 @@ import retrofit2.HttpException
 import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class ProductsRepositoryTest {
-    private lateinit var productsRepository : ProductsRepository
+class ProductsRepositoryImplTest {
+    private lateinit var productsRepositoryImpl: ProductsRepositoryImpl
+
     @Mock
     private lateinit var provideSearchProductApi: ProductSearchApi
+
     @Mock
     private lateinit var provideDescriptionProductApi: DescriptionProductApi
 
     @Before
-    fun setUp(){
+    fun setUp() {
         MockitoAnnotations.openMocks(this)
-        productsRepository = ProductsRepository(
+        productsRepositoryImpl = ProductsRepositoryImpl(
             provideSearchProductApi,
             provideDescriptionProductApi
         )
     }
 
     @Test
-    fun `getFilteredProducts should return successful` () = runTest {
+    fun `getFilteredProducts should return successful`() = runTest {
         val query = ""
         val page = 0
         val productList = mutableListOf<ProductModel>(
-            createMock(),createMock(),createMock(),
+            createMock(), createMock(), createMock(),
         )
 
-        val productSearchResponse = ProductSearchResponse(query,productList)
+        val productSearchResponse = ProductSearchResponse(query, productList)
 
         Mockito.`when`(provideSearchProductApi.getProducts(anyString(), anyInt(), anyInt()))
             .thenReturn(productSearchResponse)
 
-        val result = productsRepository.getFilteredProducts(query,page)
+        val result = productsRepositoryImpl.getFilteredProducts(query, page)
 
-        result.collect{
+        result.collect {
             assertTrue(it is ResultState.Success)
             assertEquals(productSearchResponse.results, (it as ResultState.Success).data)
             verify(provideSearchProductApi, times(1)).getProducts(anyString(), anyInt(), anyInt())
@@ -64,16 +67,16 @@ class ProductsRepositoryTest {
     }
 
     @Test
-    fun `getFilteredProducts should throw IOException` () = runTest {
+    fun `getFilteredProducts should throw IOException`() = runTest {
         val query = ""
         val page = 0
 
-        Mockito.`when`(provideSearchProductApi.getProducts(query,page,20))
+        Mockito.`when`(provideSearchProductApi.getProducts(query, page, 20))
             .thenThrow(IOException::class.java)
 
-        val result = productsRepository.getFilteredProducts(query,page)
+        val result = productsRepositoryImpl.getFilteredProducts(query, page)
 
-        result.collect{
+        result.collect {
             assertTrue(it is ResultState.Error)
             assertEquals(Constants.ERROR_IO_EXCEPTION, (it as ResultState.Error).message)
             verify(provideSearchProductApi, times(1)).getProducts(anyString(), anyInt(), anyInt())
@@ -81,16 +84,16 @@ class ProductsRepositoryTest {
     }
 
     @Test
-    fun `getFilteredProducts should throw HttpException` () = runTest {
+    fun `getFilteredProducts should throw HttpException`() = runTest {
         val query = ""
         val page = 0
 
-        Mockito.`when`(provideSearchProductApi.getProducts(query,page,20))
+        Mockito.`when`(provideSearchProductApi.getProducts(query, page, 20))
             .thenThrow(HttpException::class.java)
 
-        val result = productsRepository.getFilteredProducts(query,page)
+        val result = productsRepositoryImpl.getFilteredProducts(query, page)
 
-        result.collect{
+        result.collect {
             assertTrue(it is ResultState.Error)
             assertEquals(Constants.ERROR_HTTP_EXCEPTION, (it as ResultState.Error).message)
             verify(provideSearchProductApi, times(1)).getProducts(anyString(), anyInt(), anyInt())
@@ -98,16 +101,16 @@ class ProductsRepositoryTest {
     }
 
     @Test
-    fun `getFilteredProducts should throw Exception` () = runTest {
+    fun `getFilteredProducts should throw Exception`() = runTest {
         val query = ""
         val page = 0
 
-        Mockito.`when`(provideSearchProductApi.getProducts(query,page,20))
+        Mockito.`when`(provideSearchProductApi.getProducts(query, page, 20))
             .thenThrow(Exception::class.java)
 
-        val result = productsRepository.getFilteredProducts(query,page)
+        val result = productsRepositoryImpl.getFilteredProducts(query, page)
 
-        result.collect{
+        result.collect {
             assertTrue(it is ResultState.Error)
             assertEquals(Constants.ERROR_HTTP_NOT_FOUND, (it as ResultState.Error).message)
             verify(provideSearchProductApi, times(1)).getProducts(anyString(), anyInt(), anyInt())

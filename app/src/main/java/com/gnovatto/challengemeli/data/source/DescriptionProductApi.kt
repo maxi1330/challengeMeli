@@ -1,4 +1,4 @@
-package com.gnovatto.challengemeli.data.dataSource.api
+package com.gnovatto.challengemeli.data.source
 
 import com.gnovatto.challengemeli.domain.model.ProductDescriptionResponse
 import retrofit2.http.GET
@@ -10,6 +10,8 @@ interface DescriptionProductApi {
      * Obtiene la descripcion del producto buscado por ID de producto
      * @path Id del producto
      */
+
+    @Throws(Exception::class)
     @GET("/items/{ID_PRODUCTO}/description")
     suspend fun getProductsDescription(
         @Path("ID_PRODUCTO") productId: String,

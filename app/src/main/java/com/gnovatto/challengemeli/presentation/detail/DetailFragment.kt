@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.gnovatto.challengemeli.R
 import com.gnovatto.challengemeli.common.Logger
+import com.gnovatto.challengemeli.common.LoggerImpl
 import com.gnovatto.challengemeli.common.Utils
 import com.gnovatto.challengemeli.common.extensions.formatPrice
 import com.gnovatto.challengemeli.databinding.FragmentDetailBinding
@@ -21,11 +22,13 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
-    private var _binding : FragmentDetailBinding? = null
+    private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
     private val args: DetailFragmentArgs by navArgs()
 
     private lateinit var viewModel: DetailViewModel
+
+    private val logger : Logger = LoggerImpl
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,12 +49,14 @@ class DetailFragment : Fragment() {
                 when (state) {
                     is DetailState.Loading -> {
                         showLoading(state.isLoading)
-                        Logger.debug("Loading: ${state.isLoading}")
+                        logger.debug("Loading: ${state.isLoading}")
                     }
+
                     is DetailState.Description -> {
                         binding.description.text = state.description
-                        Logger.debug("Descripcion ok")
+                        logger.debug("Descripcion ok")
                     }
+
                     is DetailState.Error -> {
                         showError()
                     }
@@ -65,7 +70,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun showLoading(loading: Boolean) {
-        binding.progressBarDetail.visibility = if(loading) View.VISIBLE else View.GONE
+        binding.progressBarDetail.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     private fun setProductData() {
@@ -92,7 +97,6 @@ class DetailFragment : Fragment() {
             findNavController().popBackStack()
         }
     }
-
 
 
 }

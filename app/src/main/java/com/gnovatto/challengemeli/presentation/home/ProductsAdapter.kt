@@ -8,7 +8,8 @@ import com.gnovatto.challengemeli.common.extensions.formatPrice
 import com.gnovatto.challengemeli.databinding.ItemSearchBinding
 import com.gnovatto.challengemeli.domain.model.ProductModel
 
-class ProductsAdapter (private val listener: OnItemClickListener) : RecyclerView.Adapter<ProductsAdapter.ProductViewHolder>() {
+class ProductsAdapter(private val listener: OnItemClickListener) :
+    RecyclerView.Adapter<ProductsAdapter.ProductViewHolder>() {
 
     private val productList = mutableListOf<ProductModel>()
 
@@ -30,7 +31,7 @@ class ProductsAdapter (private val listener: OnItemClickListener) : RecyclerView
     fun setNewProductList(data: List<ProductModel>) {
         productList.clear()
         productList.addAll(data)
-        notifyItemRangeChanged(0,data.size)
+        notifyItemRangeChanged(0, data.size)
     }
 
     fun setMoreProductList(data: List<ProductModel>) {
@@ -38,22 +39,23 @@ class ProductsAdapter (private val listener: OnItemClickListener) : RecyclerView
         notifyItemRangeInserted(productList.size, data.size)
     }
 
-    class ProductViewHolder(val binding: ItemSearchBinding, private val adapter: ProductsAdapter) : RecyclerView.ViewHolder(binding.root) {
+    class ProductViewHolder(val binding: ItemSearchBinding, private val adapter: ProductsAdapter) :
+        RecyclerView.ViewHolder(binding.root) {
 
-         fun bind (product: ProductModel) {
-             binding.title.text = product.title
-             binding.price.text = product.price.formatPrice(product.currencyId)
-             Glide.with(itemView)
-                 .load(product.thumbnail)
-                 .into(binding.productImage)
+        fun bind(product: ProductModel) {
+            binding.title.text = product.title
+            binding.price.text = product.price.formatPrice(product.currencyId)
+            Glide.with(itemView)
+                .load(product.thumbnail)
+                .into(binding.productImage)
 
-             itemView.setOnClickListener {
-                 val position = adapterPosition
-                 if (position != RecyclerView.NO_POSITION) {
-                     val productItem = adapter.productList[position]
-                     adapter.listener.onItemClick(productItem)
-                 }
-             }
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val productItem = adapter.productList[position]
+                    adapter.listener.onItemClick(productItem)
+                }
+            }
         }
     }
 

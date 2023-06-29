@@ -1,6 +1,6 @@
 package com.gnovatto.challengemeli.common.extensions
 
-fun String.formatPrice(currency: String) : String{
+fun String.formatPrice(currency: String): String {
     val amountFormated = formatNumber(this)
     return when (currency) {
         "ARS" -> "$ $amountFormated"

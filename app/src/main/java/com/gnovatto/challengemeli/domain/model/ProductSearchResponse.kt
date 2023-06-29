@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductSearchResponse(
     @SerializedName("query")
-    val query:String,
+    val query: String,
     @SerializedName("results")
     val results: List<ProductModel>,
 )

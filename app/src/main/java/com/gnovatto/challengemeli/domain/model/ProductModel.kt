@@ -13,15 +13,15 @@ data class ProductModel(
     @SerializedName("thumbnail")
     val thumbnail: String,
     @SerializedName("condition")
-    val condition : String,
+    val condition: String,
     @SerializedName("category_id")
-    val categoryId : String,
+    val categoryId: String,
     @SerializedName("currency_id")
-    val currencyId : String,
+    val currencyId: String,
     @SerializedName("price")
     val price: String,
     @SerializedName("sold_quantity")
-    val soldQuantity : Int,
+    val soldQuantity: Int,
     @SerializedName("available_quantity")
-    val availableQuantity : Int,
+    val availableQuantity: Int,
 ) : Parcelable
